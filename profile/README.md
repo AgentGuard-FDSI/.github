@@ -23,7 +23,7 @@ El objetivo es medir cuánto reduce AgentGuard el impacto de una decisión incor
 |---|---|
 | [`agentguard-core`](https://github.com/AgentGuard-FDSI/agentguard-core) | El producto: librería que decide `ALLOW`, `BLOCK` o `HITL` para cada llamada a una herramienta según el área y el nivel de la sesión, la herramienta y sus argumentos. |
 | [`agentguard-andimarket`](https://github.com/AgentGuard-FDSI/agentguard-andimarket) | El agente de ANDIMARKET S.A.S. (empresa ficticia de comercio electrónico) y el experimento: la Config. A sin AgentGuard y la Config. B con AgentGuard instalado, con sus herramientas simuladas, datos y escenarios. |
-| `agentguard-frontend` | La interfaz web para comparar ambas configuraciones. Se publicará en el Avance 3. |
+| [`agentguard-frontend`](https://github.com/AgentGuard-FDSI/agentguard-frontend) | La interfaz web para comparar ambas configuraciones. Se construye a partir del Avance 3. |
 
 `agentguard-andimarket` instala `agentguard-core` como paquete: la Config. A no lo usa y la Config. B envuelve cada herramienta con él.
 
