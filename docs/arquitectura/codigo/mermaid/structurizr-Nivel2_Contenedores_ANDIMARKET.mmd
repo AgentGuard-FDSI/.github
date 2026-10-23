@@ -1,0 +1,47 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Container View: Agente ANDIMARKET"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    1["<div style='font-weight: bold'>Usuario de la empresa</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Escribe prompts al agente. Su<br />area y nivel salen de la<br />sesion, no de lo que escriba.</div>"]
+    style 1 fill:#334155,stroke:#232d3b,color:#ffffff
+    3["<div style='font-weight: bold'>Backend LLM</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Guion determinista (demo),<br />Gemini/Groq (cuota gratuita)<br />u Ollama local.</div>"]
+    style 3 fill:#64748b,stroke:#465161,color:#ffffff
+    13["<div style='font-weight: bold'>AgentGuard (libreria)</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Libreria Python instalable<br />que media las llamadas a<br />herramientas. Corre en el<br />mismo proceso que el agente:<br />no es un sandbox.</div>"]
+    style 13 fill:#1d4ed8,stroke:#143697,color:#ffffff
+
+    subgraph 4 ["Agente ANDIMARKET"]
+      style 4 fill:#ffffff,stroke:#143697,color:#143697
+
+      10[("<div style='font-weight: bold'>SQLite de evidencia</div><div style='font-size: 70%; margin-top: 0px'>[Container: SQLite: auditoria.py]</div><div style='font-size: 80%; margin-top:10px'>Decisiones y efectos de<br />Config. B, guardados antes de<br />ejecutar. Si falla el<br />registro, la accion falla<br />cerrada. Sin cadena de<br />hashes.</div>")]
+      style 10 fill:#b7791f,stroke:#805415,color:#ffffff
+      11[("<div style='font-weight: bold'>policies.yaml</div><div style='font-size: 70%; margin-top: 0px'>[Container: YAML]</div><div style='font-size: 80%; margin-top:10px'>Reglas por area, herramienta<br />y argumentos. Se valida al<br />iniciar; politica invalida =<br />no se ejecuta.</div>")]
+      style 11 fill:#b7791f,stroke:#805415,color:#ffffff
+      12["<div style='font-weight: bold'>ConsoleApprover</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python]</div><div style='font-size: 80%; margin-top:10px'>HITL actual de la demo:<br />confirmacion por consola. Por<br />defecto rechaza en corridas<br />reproducibles.</div>"]
+      style 12 fill:#2563eb,stroke:#1945a4,color:#ffffff
+      5["<div style='font-weight: bold'>CLI / runner</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python: config_a.py, config_b.py, session.py]</div><div style='font-size: 80%; margin-top:10px'>Elige Config. A o B y crea la<br />sesion (usuario, area,<br />nivel).</div>"]
+      style 5 fill:#2563eb,stroke:#1945a4,color:#ffffff
+      6["<div style='font-weight: bold'>Agent Loop</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python: agent/loop.py]</div><div style='font-size: 80%; margin-top:10px'>Envia prompt y definiciones<br />de herramientas al modelo;<br />ejecuta las llamadas a<br />herramientas que este<br />devuelve.</div>"]
+      style 6 fill:#2563eb,stroke:#1945a4,color:#ffffff
+      7["<div style='font-weight: bold'>RegistryToolbox (Config. A)</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python: toolbox.py]</div><div style='font-size: 80%; margin-top:10px'>Ejecuta la herramienta<br />directamente, sin<br />autorizacion.</div>"]
+      style 7 fill:#2563eb,stroke:#1945a4,color:#ffffff
+      8["<div style='font-weight: bold'>GuardedToolbox (Config. B)</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python: toolbox_guard.py]</div><div style='font-size: 80%; margin-top:10px'>Intercepta cada llamada y<br />pide autorizacion a<br />AgentGuard antes de ejecutar<br />la misma herramienta.</div>"]
+      style 8 fill:#2563eb,stroke:#1945a4,color:#ffffff
+      9[("<div style='font-weight: bold'>SQLite de negocio</div><div style='font-size: 70%; margin-top: 0px'>[Container: SQLite]</div><div style='font-size: 80%; margin-top:10px'>Clientes, pedidos, pagos y<br />configuracion de TI<br />(simulados).</div>")]
+      style 9 fill:#b7791f,stroke:#805415,color:#ffffff
+    end
+
+    1-. "<div>Prompt y escenario</div><div style='font-size: 70%'></div>" .->5
+    5-. "<div>Texto + sesion + Config. A/B</div><div style='font-size: 70%'></div>" .->6
+    6-. "<div>Prompt + herramientas / tool<br />call</div><div style='font-size: 70%'></div>" .->3
+    6-. "<div>Config. A: ejecucion directa</div><div style='font-size: 70%'></div>" .->7
+    6-. "<div>Config. B: llamada<br />interceptada</div><div style='font-size: 70%'></div>" .->8
+    7-. "<div>Consulta o cambio</div><div style='font-size: 70%'></div>" .->9
+    8-. "<div>session + tool + arguments</div><div style='font-size: 70%'></div>" .->13
+    8-. "<div>Solo si HITL</div><div style='font-size: 70%'></div>" .->12
+    8-. "<div>Registra decision antes de<br />ejecutar; falla cerrado</div><div style='font-size: 70%'></div>" .->10
+    8-. "<div>Solo si ALLOW o HITL aprobada</div><div style='font-size: 70%'></div>" .->9
+    13-. "<div>Lee reglas</div><div style='font-size: 70%'></div>" .->11
+
+  end

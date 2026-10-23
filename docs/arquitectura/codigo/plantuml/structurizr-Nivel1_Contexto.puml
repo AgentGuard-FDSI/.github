@@ -1,0 +1,74 @@
+@startuml
+title <size:24>System Context View: Agente ANDIMARKET</size>\n<size:24>C4 nivel 1: quien usa el sistema y con que se relaciona.</size>
+
+set separator none
+left to right direction
+skinparam ranksep 20
+skinparam nodesep 5
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element,Person
+  .Element-RWxlbWVudCxQZXJzb24= {
+    BackgroundColor: #334155;
+    LineColor: #232d3b;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Software System
+  .Element-RWxlbWVudCxTb2Z0d2FyZSBTeXN0ZW0= {
+    BackgroundColor: #1d4ed8;
+    LineColor: #143697;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Software System,Externo
+  .Element-RWxlbWVudCxTb2Z0d2FyZSBTeXN0ZW0sRXh0ZXJubw== {
+    BackgroundColor: #64748b;
+    LineColor: #465161;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #ffffff;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship
+  .Relationship-UmVsYXRpb25zaGlw {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #444444;
+    FontColor: #444444;
+    FontSize: 24;
+    MaximumWidth: 200;
+  }
+</style>
+
+person "==Usuario de la empresa\n<size:16>[Person]</size>\n\nEscribe prompts al agente. Su area y nivel salen de la sesion, no de lo que escriba." <<Element-RWxlbWVudCxQZXJzb24=>> as Usuariodelaempresa
+rectangle "==AgentGuard (libreria)\n<size:16>[Software System]</size>\n\nLibreria Python instalable que media las llamadas a herramientas. Corre en el mismo proceso que el agente: no es un sandbox." <<Element-RWxlbWVudCxTb2Z0d2FyZSBTeXN0ZW0=>> as AgentGuardlibreria
+person "==Aprobador (jefe)\n<size:16>[Person]</size>\n\nAprueba o rechaza acciones HITL. Nunca puede aprobar quien hizo la solicitud." <<Element-RWxlbWVudCxQZXJzb24=>> as Aprobadorjefe
+rectangle "==Backend LLM\n<size:16>[Software System]</size>\n\nGuion determinista (demo), Gemini/Groq (cuota gratuita) u Ollama local." <<Element-RWxlbWVudCxTb2Z0d2FyZSBTeXN0ZW0sRXh0ZXJubw==>> as BackendLLM
+rectangle "==Agente ANDIMARKET\n<size:16>[Software System]</size>\n\nMismo agente, prompt, modelo, herramientas y datos en Config. A y Config. B. Herramientas y efectos simulados." <<Element-RWxlbWVudCxTb2Z0d2FyZSBTeXN0ZW0=>> as AgenteANDIMARKET
+
+Usuariodelaempresa --> AgenteANDIMARKET <<Relationship-UmVsYXRpb25zaGlw>> : "Pide tareas en lenguaje natural"
+Aprobadorjefe --> AgenteANDIMARKET <<Relationship-UmVsYXRpb25zaGlw>> : "Aprueba o rechaza acciones HITL (hoy por consola)"
+AgenteANDIMARKET --> BackendLLM <<Relationship-UmVsYXRpb25zaGlw>> : "Prompt y definiciones de herramientas; recibe respuesta o tool call"
+AgenteANDIMARKET --> AgentGuardlibreria <<Relationship-UmVsYXRpb25zaGlw>> : "Config. B: authorize() antes de cada herramienta"
+AgentGuardlibreria --> AgenteANDIMARKET <<Relationship-UmVsYXRpb25zaGlw>> : "Lee reglas"
+
+@enduml

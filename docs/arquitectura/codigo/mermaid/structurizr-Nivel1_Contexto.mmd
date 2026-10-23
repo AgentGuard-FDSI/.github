@@ -1,0 +1,24 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["System Context View: Agente ANDIMARKET"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    1["<div style='font-weight: bold'>Usuario de la empresa</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Escribe prompts al agente. Su<br />area y nivel salen de la<br />sesion, no de lo que escriba.</div>"]
+    style 1 fill:#334155,stroke:#232d3b,color:#ffffff
+    13["<div style='font-weight: bold'>AgentGuard (libreria)</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Libreria Python instalable<br />que media las llamadas a<br />herramientas. Corre en el<br />mismo proceso que el agente:<br />no es un sandbox.</div>"]
+    style 13 fill:#1d4ed8,stroke:#143697,color:#ffffff
+    2["<div style='font-weight: bold'>Aprobador (jefe)</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Aprueba o rechaza acciones<br />HITL. Nunca puede aprobar<br />quien hizo la solicitud.</div>"]
+    style 2 fill:#334155,stroke:#232d3b,color:#ffffff
+    3["<div style='font-weight: bold'>Backend LLM</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Guion determinista (demo),<br />Gemini/Groq (cuota gratuita)<br />u Ollama local.</div>"]
+    style 3 fill:#64748b,stroke:#465161,color:#ffffff
+    4["<div style='font-weight: bold'>Agente ANDIMARKET</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Mismo agente, prompt, modelo,<br />herramientas y datos en<br />Config. A y Config. B.<br />Herramientas y efectos<br />simulados.</div>"]
+    style 4 fill:#1d4ed8,stroke:#143697,color:#ffffff
+
+    1-. "<div>Pide tareas en lenguaje<br />natural</div><div style='font-size: 70%'></div>" .->4
+    2-. "<div>Aprueba o rechaza acciones<br />HITL (hoy por consola)</div><div style='font-size: 70%'></div>" .->4
+    4-. "<div>Prompt y definiciones de<br />herramientas; recibe<br />respuesta o tool call</div><div style='font-size: 70%'></div>" .->3
+    4-. "<div>Config. B: authorize() antes<br />de cada herramienta</div><div style='font-size: 70%'></div>" .->13
+    13-. "<div>Lee reglas</div><div style='font-size: 70%'></div>" .->4
+
+  end

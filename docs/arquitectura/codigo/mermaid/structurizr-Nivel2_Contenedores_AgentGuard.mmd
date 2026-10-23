@@ -1,0 +1,22 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Container View: AgentGuard (libreria)"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    4["<div style='font-weight: bold'>Agente ANDIMARKET</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Mismo agente, prompt, modelo,<br />herramientas y datos en<br />Config. A y Config. B.<br />Herramientas y efectos<br />simulados.</div>"]
+    style 4 fill:#1d4ed8,stroke:#143697,color:#ffffff
+
+    subgraph 13 ["AgentGuard (libreria)"]
+      style 13 fill:#ffffff,stroke:#143697,color:#143697
+
+      14["<div style='font-weight: bold'>AgentGuard.authorize()</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python: guard.py, decision.py]</div><div style='font-size: 80%; margin-top:10px'>authorize(session, tool,<br />arguments) devuelve ALLOW,<br />BLOCK o HITL. Falla cerrado.</div>"]
+      style 14 fill:#2563eb,stroke:#1945a4,color:#ffffff
+      23["<div style='font-weight: bold'>Verificador de entrada y regla entre areas</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python]</div><div style='font-size: 80%; margin-top:10px'>Por desarrollar.</div>"]
+      style 23 fill:#f3e8ff,stroke:#7c3aed,color:#4c1d95
+    end
+
+    4-. "<div>session + tool + arguments</div><div style='font-size: 70%'></div>" .->14
+    14-. "<div>Lee reglas</div><div style='font-size: 70%'></div>" .->4
+
+  end

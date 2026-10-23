@@ -1,0 +1,44 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Component View: AgentGuard (libreria) - AgentGuard.authorize()"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    4["<div style='font-weight: bold'>Agente ANDIMARKET</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Mismo agente, prompt, modelo,<br />herramientas y datos en<br />Config. A y Config. B.<br />Herramientas y efectos<br />simulados.</div>"]
+    style 4 fill:#1d4ed8,stroke:#143697,color:#ffffff
+
+    subgraph 13 ["AgentGuard (libreria)"]
+      style 13 fill:#ffffff,stroke:#143697,color:#143697
+
+      subgraph 14 ["AgentGuard.authorize()"]
+        style 14 fill:#ffffff,stroke:#1945a4,color:#1945a4
+
+        15["<div style='font-weight: bold'>AgentGuard</div><div style='font-size: 70%; margin-top: 0px'>[Component: guard.py]</div><div style='font-size: 80%; margin-top:10px'>Punto de entrada: orquesta<br />politica, argumentos y<br />decision.</div>"]
+        style 15 fill:#16804a,stroke:#0f5933,color:#ffffff
+        16["<div style='font-weight: bold'>Motor de politicas</div><div style='font-size: 70%; margin-top: 0px'>[Component: policy/loader.py, policy/models.py]</div><div style='font-size: 80%; margin-top:10px'>Carga y valida politicas;<br />resuelve regla por area y<br />herramienta.</div>"]
+        style 16 fill:#16804a,stroke:#0f5933,color:#ffffff
+        17["<div style='font-weight: bold'>Validacion de argumentos</div><div style='font-size: 70%; margin-top: 0px'>[Component: guard.py]</div><div style='font-size: 80%; margin-top:10px'>Restricciones sobre los<br />argumentos de la herramienta.</div>"]
+        style 17 fill:#16804a,stroke:#0f5933,color:#ffffff
+        18["<div style='font-weight: bold'>Decision</div><div style='font-size: 70%; margin-top: 0px'>[Component: decision.py]</div><div style='font-size: 80%; margin-top:10px'>ALLOW / BLOCK / HITL con<br />motivo.</div>"]
+        style 18 fill:#16804a,stroke:#0f5933,color:#ffffff
+        19["<div style='font-weight: bold'>Directorio</div><div style='font-size: 70%; margin-top: 0px'>[Component: directory.py]</div><div style='font-size: 80%; margin-top:10px'>Usuarios, areas y niveles<br />para resolver aprobadores.</div>"]
+        style 19 fill:#fff8e7,stroke:#c27a00,color:#53370a
+        20["<div style='font-weight: bold'>ApprovalService</div><div style='font-size: 70%; margin-top: 0px'>[Component: approval.py]</div><div style='font-size: 80%; margin-top:10px'>Cola SQLite de solicitudes<br />HITL.</div>"]
+        style 20 fill:#fff8e7,stroke:#c27a00,color:#53370a
+        21["<div style='font-weight: bold'>ValidatingApprover</div><div style='font-size: 70%; margin-top: 0px'>[Component: hitl.py]</div><div style='font-size: 80%; margin-top:10px'>Separacion de funciones: el<br />solicitante no aprueba.</div>"]
+        style 21 fill:#fff8e7,stroke:#c27a00,color:#53370a
+        22["<div style='font-weight: bold'>AuditChain</div><div style='font-size: 70%; margin-top: 0px'>[Component: audit.py]</div><div style='font-size: 80%; margin-top:10px'>Registro encadenado por hash,<br />verificable (audit_cli).</div>"]
+        style 22 fill:#fff8e7,stroke:#c27a00,color:#53370a
+      end
+
+    end
+
+    4-. "<div>authorize(session, tool,<br />arguments)</div><div style='font-size: 70%'></div>" .->15
+    15-. "<div>Resuelve regla</div><div style='font-size: 70%'></div>" .->16
+    15-. "<div>Valida argumentos</div><div style='font-size: 70%'></div>" .->17
+    15-. "<div>Construye decision</div><div style='font-size: 70%'></div>" .->18
+    20-. "<div>Valida aprobador</div><div style='font-size: 70%'></div>" .->21
+    21-. "<div>Consulta area y nivel</div><div style='font-size: 70%'></div>" .->19
+    20-. "<div>Registra</div><div style='font-size: 70%'></div>" .->22
+
+  end
