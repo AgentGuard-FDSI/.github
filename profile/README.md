@@ -40,17 +40,18 @@ El objetivo es medir cuánto reduce AgentGuard el impacto de una decisión incor
 |---|---|
 | [`agentguard-core`](https://github.com/AgentGuard-FDSI/agentguard-core) | El producto: librería que decide `ALLOW`, `BLOCK` o `HITL` para cada llamada a una herramienta según el área y el nivel de la sesión, la herramienta y sus argumentos. Incluye validación de políticas y de argumentos, servicios de aprobación humana y una cadena de auditoría verificable. |
 | [`agentguard-andimarket`](https://github.com/AgentGuard-FDSI/agentguard-andimarket) | El agente de ANDIMARKET S.A.S. y el experimento: la Config. A sin AgentGuard y la Config. B con AgentGuard instalado, con herramientas simuladas, datos en SQLite, modelos intercambiables (guion determinista, Gemini, Groq y Ollama), escenarios y un comparador de resultados. |
-| [`agentguard-frontend`](https://github.com/AgentGuard-FDSI/agentguard-frontend) | La interfaz web para comparar ambas configuraciones. Por ahora solo tiene la estructura inicial; el diseño está en un prototipo de Figma. |
+| [`agentguard-frontend`](https://github.com/AgentGuard-FDSI/agentguard-frontend) | La interfaz web (React, TypeScript, Vite): inicio de sesión, asistente, aprobaciones, seguridad, políticas y comparación A/B. Consume la API de `agentguard-andimarket`. |
 
 `agentguard-andimarket` instala `agentguard-core` como paquete: la Config. A no lo usa y la Config. B envuelve cada herramienta con él.
 
 ## Estado del proyecto
 
-- **Integrado en la demo (Config. B):** la decisión `ALLOW`, `BLOCK` o `HITL` antes de cada herramienta, la aprobación humana por consola, el registro de la decisión en SQLite antes de ejecutar y el comportamiento que falla cerrado.
-- **Disponible en el núcleo, aún sin conectar a la demo:** la cola de solicitudes de aprobación, la separación de funciones (quien solicita no aprueba) y la cadena de auditoría con hash verificable.
-- **Por desarrollar:** el verificador de contenido de entrada, la regla de acceso entre áreas, la API y la interfaz web.
+- **Integrado en la demo (Config. B):** la decisión `ALLOW`, `BLOCK` o `HITL` antes de cada herramienta, la cola de aprobación humana con separación de funciones (quien solicita no aprueba), el verificador de entrada, la regla de acceso entre áreas, la cadena de auditoría con hash verificable, la API y la interfaz web. Si no se puede decidir o registrar una acción, no se ejecuta.
+- **Planeado:** los escenarios 7 a 9 del experimento (acceso entre áreas, escrituras masivas y autoaprobación), la autenticación real y la firma de la cadena de auditoría.
 
-Es un prototipo académico: las herramientas y sus efectos son simulados, y AgentGuard corre en el mismo proceso que el agente, por lo que no es un sandbox ni está listo para producción. Cada repositorio documenta en su README qué está listo y qué falta.
+Pruebas al 30 de octubre de 2026: 367 en `agentguard-core`, 205 en `agentguard-andimarket` y 17 en `agentguard-frontend`.
+
+Es un prototipo académico: las herramientas y sus efectos son simulados, y AgentGuard corre en el mismo proceso que el agente, por lo que no es un sandbox ni está listo para producción. El detalle está en [`docs/estado-del-proyecto.md`](../docs/estado-del-proyecto.md) y la documentación completa en el [índice](../docs/README.md).
 
 ## Contexto académico
 
